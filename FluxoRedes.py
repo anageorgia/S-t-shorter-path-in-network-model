@@ -22,6 +22,8 @@
 
 
 from collections import namedtuple
+from typing import List
+
 from scipy.optimize import linprog
 from time import sleep
 
@@ -65,7 +67,7 @@ def defineMatrix(nodes,n_connections,myGraph):
     h, w = len(nodes), n_connections;
     matrixSimplex = [[0 for x in range(w)] for y in range(h)]
     w, h = len(nodes), 1;
-    
+
     flow = [[0 for x in range(w)] for y in range(h)]
     for i in range(n_connections):
         for j in range(len(nodes)):
@@ -76,6 +78,9 @@ def defineMatrix(nodes,n_connections,myGraph):
     flow[0][0] = 1
     flow[0][len(nodes)-1] = -1
     return matrixSimplex, flow
+
+
+
 
 Graph = namedtuple('Graph', 'nodeA nodeB Weigth')
 
@@ -101,19 +106,19 @@ print("Let's start inserting the nodes and weights of each edge between them\n")
 
 
 for i in range(n_connections):
-    
+
     print("\n")
     nA = input('Enter the first Node: ')
     print("\nWho is connected to " + str(nA) + "?")
-    
+
     nB = input(' ' )
     print("\nWhat's the weight of the connection between " + str(nA) + " and " + str(nB) + "?")
-    
+
     w = int(input(' '))
-    
+
     if i < n_connections-1:
         print("\nNext...")
-    
+
     myGraph.append(Graph(nodeA = nA, nodeB = nB, Weigth = w))
 
 nodes = defineNodes(myGraph, init, end)
@@ -126,8 +131,12 @@ matrixSimplex, flow = defineMatrix(nodes,n_connections,myGraph)
 
 res = linprog(weigths, matrixSimplex, flow)
 
-print("\n")
-print("Results:")
-print("\n_______________________________________________\n")
-print(res)
+# print("\n")
+# print("Results:")
+# print("\n_______________________________________________\n")
+# print(res)
 
+print("\n\nResults:")
+print("_______________________________________________\n")
+print("Your shortest path is: ")
+print("with a weight equal to:", int(res['fun']))
