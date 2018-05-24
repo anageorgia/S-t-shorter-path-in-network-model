@@ -39,6 +39,9 @@ def defineMatrix(nodes,n_connections,myGraph):
     w, h = len(nodes), 1;
     flow = [[0 for x in range(w)] for y in range(h)] 
     for i in range(n_connections):
+        print(myGraph[i].nodeA)
+        print(myGraph[i].nodeB)
+        print('\n')
         for j in range(len(nodes)):
             if(nodes[j] == myGraph[i].nodeA):
                 matrixSimplex[j][i] = 1
@@ -47,6 +50,18 @@ def defineMatrix(nodes,n_connections,myGraph):
     flow[0][0] = 1
     flow[0][len(nodes)-1] = -1
     return matrixSimplex, flow
+
+def result(myGraph, resX):
+    j = 0
+    print('The Best Way is: ')
+    for i in range(len(resX)):
+        if(resX[i] != 0):
+            if(j == 0):
+                print(myGraph[i].nodeA)
+                print(myGraph[i].nodeB)
+                j = j + 1
+            else:
+                print(myGraph[i].nodeB)
 
 Graph = namedtuple('Graph', 'nodeA nodeB Weigth')
 
@@ -67,4 +82,5 @@ nodes = defineNodes(myGraph, init, end)
 weigths = defineWeigths(myGraph)
 
 matrixSimplex, flow = defineMatrix(nodes,n_connections,myGraph)
-res = linprog(weigths, matrixSimplex, flow)            
+res = linprog(weigths, matrixSimplex, flow)   
+result(myGraph, res.x)         
