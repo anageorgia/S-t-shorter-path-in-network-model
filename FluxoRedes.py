@@ -80,6 +80,22 @@ def defineMatrix(nodes,n_connections,myGraph):
     return matrixSimplex, flow
 
 
+def result(myGraph, resX):
+    j = 0
+    res = ''
+    for i in range(len(resX)):
+        if(resX[i] != 0):
+            if(j == 0):
+                res = res + myGraph[i].nodeA
+                res = res + ' -> '
+                res = res + myGraph[i].nodeB
+                j = j + 1
+            else:
+                res = res + ' -> '
+                res = res + myGraph[i].nodeB
+    print(res)
+    print('\n')
+
 
 
 Graph = namedtuple('Graph', 'nodeA nodeB Weigth')
@@ -111,7 +127,7 @@ for i in range(n_connections):
     nA = input('Enter the first Node: ')
     print("\nWho is connected to " + str(nA) + "?")
 
-    nB = input(' ' )
+    nB = input(' ')
     print("\nWhat's the weight of the connection between " + str(nA) + " and " + str(nB) + "?")
 
     w = int(input(' '))
@@ -131,12 +147,8 @@ matrixSimplex, flow = defineMatrix(nodes,n_connections,myGraph)
 
 res = linprog(weigths, matrixSimplex, flow)
 
-# print("\n")
-# print("Results:")
-# print("\n_______________________________________________\n")
-# print(res)
-
 print("\n\nResults:")
 print("_______________________________________________\n")
 print("Your shortest path is: ")
+result(myGraph, res.x)
 print("with a weight equal to:", int(res['fun']))
